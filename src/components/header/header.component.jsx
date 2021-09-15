@@ -8,9 +8,58 @@ import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import { createStructuredSelector } from "reselect";
 import { selectCartHidden } from "../../redux/cart/cart.selectors";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
+import {
+  HeaderContainer,
+  LogoContainer,
+  OptionsContainer,
+  OptionDiv,
+  OptionLink,
+} from "./header.styles";
 
 import "./header.styles.scss";
 
+const Header = ({ currentUser, hidden }) => {
+  return (
+    <HeaderContainer>
+      <LogoContainer to="/">
+        <Logo className="logo" />
+      </LogoContainer>
+
+      <OptionsContainer>
+        <OptionLink to="/shop">SHOP</OptionLink>
+
+        <OptionLink to="/shop">CONTACT</OptionLink>
+
+        {currentUser ? (
+          <OptionDiv onClick={() => auth.signOut()}>SIGN OUT</OptionDiv>
+        ) : (
+          <OptionLink to="/signin">SIGN IN</OptionLink>
+        )}
+        <CartIcon />
+      </OptionsContainer>
+      {hidden ? null : <CartDropdown />}
+    </HeaderContainer>
+  );
+};
+
+//advanced destructuring
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
+});
+
+// basically for giving header custom prop
+export default connect(mapStateToProps)(Header);
+/* 
+// state here is the root reducer
+// this function returns an object - {currentUser: value here will come from rootreducer.userreducer.currentUser}
+// this is then sent in props where it is destructured above ^ as ({currentUser})
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+}); */
+
+//BEFORE STYLED COMPONENTS FOR REFERENCE
+/* 
 const Header = ({ currentUser, hidden }) => {
   return (
     <div className="header">
@@ -43,18 +92,6 @@ const Header = ({ currentUser, hidden }) => {
   );
 };
 
-//advanced destructuring
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-  hidden: selectCartHidden,
-});
 
-// basically for giving header custom prop
-export default connect(mapStateToProps)(Header);
-/* 
-// state here is the root reducer
-// this function returns an object - {currentUser: value here will come from rootreducer.userreducer.currentUser}
-// this is then sent in props where it is destructured above ^ as ({currentUser})
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
-}); */
+
+*/

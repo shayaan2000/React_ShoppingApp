@@ -22,6 +22,7 @@
     border: 1px solid black;
   }
 
+  // for the google button
   &.google-sign-in {
     background-color: #4285f4;
     color: white;
@@ -32,6 +33,7 @@
     }
   }
 
+  // for an inverted colored button
   &.inverted {
     background-color: white;
     color: black;
