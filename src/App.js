@@ -11,7 +11,7 @@ import { onSnapshot } from "firebase/firestore";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
-
+import { createStructuredSelector } from "reselect";
 class App extends React.Component {
   // constructor not needed anymore after redux
   /* constructor() {
@@ -41,6 +41,12 @@ class App extends React.Component {
       }
       //userAuth is null
       setCurrentUser(userAuth);
+
+      // was only written so initial data doesnt have to be manually entered in firestore
+      // addCollectionAndDocuments(
+      //   "collection",
+      //   collectionsArray.map(({ title, items }) => ({ title, items }))
+      // );
     });
   }
 
@@ -73,8 +79,11 @@ class App extends React.Component {
 }
 
 // getting current user from state (user reducer destructured)
-const mapStateToProps = (state) => ({
-  currentUser: selectCurrentUser(state),
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+
+  //for sending initial shop data to firebase
+  // collectionsArray: selectCollectionsForPreview,
 });
 
 // for setting current user

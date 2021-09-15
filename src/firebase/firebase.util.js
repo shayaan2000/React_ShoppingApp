@@ -1,6 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  collection,
+  getDoc,
+  setDoc,
+  writeBatch,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCdkv6_pniMukaDj_YLVS-Tb2jKDF9YTLk",
@@ -54,4 +61,48 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   }
 
   return userRef;
+};
+
+// converting snapshot to obj
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+  // console.log(transformedCollection);
+
+  //converting the array of objs to an object with 5 keys and nested obs
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+};
+
+//initially from shop data, not called anywhere now
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(firestore, collectionKey);
+  console.log(collectionRef);
+  //at this point nothing is instantiated in the firestore
+
+  //for predictability we need all to succeed or all to fail, so we will use a batch
+
+  // console.log("TYPE", typeof objectsToAdd);
+  // console.log("OBJTOADD", objectsToAdd);
+
+  const batch = writeBatch(firestore);
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = doc(collectionRef);
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
 };
