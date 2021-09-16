@@ -21,6 +21,7 @@ export const fetchCollectionsFailure = (errorMessage) => ({
   payload: errorMessage,
 });
 
+// action for thunk
 export const fetchCollecctionsStartAsync = () => {
   return (dispatch) => {
     const collectionRef = collection(firestore, "collection");

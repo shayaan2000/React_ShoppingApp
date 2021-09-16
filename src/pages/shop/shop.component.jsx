@@ -25,6 +25,9 @@ import CollectionPage from "../collection/collection.component";
 
 import CollectionPageContainer from "../collection/collection.container";
 import CollectionsOverviewContainer from "../../components/collections-overview/collections-overview.container";
+
+import { fetchCollectionsStart } from "../../redux/shop/shop.actions";
+
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
@@ -33,28 +36,8 @@ class ShopPage extends React.Component {
 
   //getting data
   componentDidMount() {
-    const { fetchCollecctionsStartAsync } = this.props;
-    fetchCollecctionsStartAsync();
-
-    // FOR REFERENCE
-    //using rest call
-    // //crwn-db-a683c
-    // fetch("https://firestore.googleapis.com/v1/projects/crwn-db-a683c/databases/(default)/documents/collection")
-    // .then(response => response.json())
-    // .then(collections => console.log(collections))
-
-    /*   const { updateCollections } = this.props;
-    const collectionRef = collection(firestore, "collection");
-    this.unsubscribeFromSnapshot = onSnapshot(
-      collectionRef,
-      async (snapShot) => {
-        const collectionsMap = convertCollectionsSnapshotToMap(snapShot);
-        // have the final formatted data here
-        updateCollections(collectionsMap);
-        console.log("collection map", collectionsMap);
-        this.setState({ loading: false });
-      }
-    ); */
+    const { fetchCollectionsStart } = this.props;
+    fetchCollectionsStart();
   }
 
   render() {
@@ -85,7 +68,7 @@ class ShopPage extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   // updateCollections: (collectionsMap) =>
   //   dispatch(updateCollections(collectionsMap)),
-  fetchCollecctionsStartAsync: () => dispatch(fetchCollecctionsStartAsync()),
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 const mapStateToProps = createStructuredSelector({
