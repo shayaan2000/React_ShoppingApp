@@ -28,7 +28,7 @@ class App extends React.Component {
   componentDidMount() {
     const { setCurrentUser } = this.props;
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+    /* this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth); //we will get back userRef even if user is already created
 
@@ -41,13 +41,13 @@ class App extends React.Component {
       }
       //userAuth is null
       setCurrentUser(userAuth);
-
-      // was only written so initial data doesnt have to be manually entered in firestore
-      // addCollectionAndDocuments(
-      //   "collection",
-      //   collectionsArray.map(({ title, items }) => ({ title, items }))
-      // );
-    });
+ */
+    // was only written so initial data doesnt have to be manually entered in firestore
+    // addCollectionAndDocuments(
+    //   "collection",
+    //   collectionsArray.map(({ title, items }) => ({ title, items }))
+    // );
+    // });
   }
 
   componentWillUnmount() {
