@@ -106,3 +106,13 @@ export const addCollectionAndDocuments = async (
 
   return await batch.commit();
 };
+
+//mimicking promise by immediately unsubc=scribing
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+      resolve(userAuth);
+    }, reject);
+  });
+};
