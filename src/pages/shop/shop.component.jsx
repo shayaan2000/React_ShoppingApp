@@ -1,7 +1,5 @@
 import React from "react";
-import CollectionsOverview from "../../components/collections-overview/collections-overview.component";
 import { Route } from "react-router-dom";
-import CollectionPage from "../collection/collection.component";
 import {
   convertCollectionsSnapshotToMap,
   firestore,
@@ -22,7 +20,11 @@ import {
   selectIsCollectionFetching,
   selectIsCollectionsLoaded,
 } from "../../redux/shop/shop.selector";
+import CollectionsOverview from "../../components/collections-overview/collections-overview.component";
+import CollectionPage from "../collection/collection.component";
 
+import CollectionPageContainer from "../collection/collection.container";
+import CollectionsOverviewContainer from "../../components/collections-overview/collections-overview.container";
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
@@ -62,13 +64,10 @@ class ShopPage extends React.Component {
         <Route
           exact
           path={`${match.path}`}
-          render={(props) => (
-            <CollectionsOverviewWithSpinner
-              isLoading={isCollectionFetching}
-              {...props}
-            />
-          )}
+          component={CollectionsOverviewContainer}
         />
+
+        {/* keeping this without container patter for reference */}
         <Route
           path={`${match.path}/:collectionId`}
           render={(props) => (
