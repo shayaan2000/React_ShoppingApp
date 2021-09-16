@@ -1,4 +1,4 @@
-import { takeEvery, call, put } from "@redux-saga/core/effects";
+import { takeEvery, call, put, all } from "@redux-saga/core/effects";
 import ShopActionTypes from "./shop.types";
 import { collection } from "@firebase/firestore";
 import { getDocs } from "@firebase/firestore";
@@ -47,4 +47,8 @@ export function* fetchCollectionsStart() {
     ShopActionTypes.FETCH_COLLECTIONS_START,
     fetchCollectionsAsync
   );
+}
+
+export function* shopSagas() {
+  yield all([call(fetchCollectionsStart)]);
 }
