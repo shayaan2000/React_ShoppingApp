@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { Route } from "react-router-dom";
 import {
   convertCollectionsSnapshotToMap,
@@ -31,39 +32,37 @@ import { fetchCollectionsStart } from "../../redux/shop/shop.actions";
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
-class ShopPage extends React.Component {
-  unsubscribeFromSnapshot = null;
-
-  //getting data
-  componentDidMount() {
-    const { fetchCollectionsStart } = this.props;
+const ShopPage = ({
+  fetchCollectionsStart,
+  match,
+  isCollectionFetching,
+  isCollectionsLoaded,
+}) => {
+  useEffect(() => {
     fetchCollectionsStart();
-  }
+  }, [fetchCollectionsStart]);
 
-  render() {
-    const { match, isCollectionFetching, isCollectionsLoaded } = this.props;
-    return (
-      <div className="shop-page">
-        <Route
-          exact
-          path={`${match.path}`}
-          component={CollectionsOverviewContainer}
-        />
+  return (
+    <div className="shop-page">
+      <Route
+        exact
+        path={`${match.path}`}
+        component={CollectionsOverviewContainer}
+      />
 
-        {/* keeping this without container patter for reference */}
-        <Route
-          path={`${match.path}/:collectionId`}
-          render={(props) => (
-            <CollectionPageWithSpinner
-              isLoading={!isCollectionsLoaded}
-              {...props}
-            />
-          )}
-        />
-      </div>
-    );
-  }
-}
+      {/* keeping this without container patter for reference */}
+      <Route
+        path={`${match.path}/:collectionId`}
+        render={(props) => (
+          <CollectionPageWithSpinner
+            isLoading={!isCollectionsLoaded}
+            {...props}
+          />
+        )}
+      />
+    </div>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   // updateCollections: (collectionsMap) =>
