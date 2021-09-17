@@ -1,5 +1,6 @@
 import React from "react";
 import StripeCheckout from "react-stripe-checkout";
+import axios from "axios";
 
 const StripeCheckoutButton = ({ price }) => {
   const priceForStripe = price * 100; //needs in cents
@@ -8,8 +9,21 @@ const StripeCheckoutButton = ({ price }) => {
 
   const onToken = (token) => {
     console.log(token);
-    // we usually pass this to backend to charge but for now alerting success
-    alert("Payment Succesful!");
+    axios({
+      url: "payment",
+      method: "post",
+      data: {
+        amount: priceForStripe,
+        token: token,
+      },
+    })
+      .then((response) => {
+        alert("Succesful Payment!");
+      })
+      .catch((error) => {
+        console.log("Payment Error: ", error);
+        alert("Payment unsuccessful");
+      });
   };
 
   // inside stipe checkout, there are countless properties you can set
